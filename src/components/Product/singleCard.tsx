@@ -1,9 +1,13 @@
 import {MDBBtn, MDBCardImage, MDBCol, MDBIcon, MDBInput, MDBRow, MDBTypography} from "mdb-react-ui-kit";
+import {useDispatch} from "react-redux";
+import {incrementProductQuantity} from "../../App/features/cartSlice.ts";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const SingleCard = ({fields}) => {
-    const {brand,category,price,thumbnail} = fields;
+    const {brand,category,price,thumbnail,_id} = fields;
+
+    const dispatch = useDispatch()
     return (
         <MDBRow className="mb-4 d-flex justify-content-between align-items-center">
             <MDBCol md="2" lg="2" xl="2">
@@ -27,7 +31,9 @@ const SingleCard = ({fields}) => {
 
                     <MDBInput defaultValue={1} min={0} type="number" label="Quantity" />
 
-                    <MDBBtn className="px-3 ms-2">
+                    <MDBBtn className="px-3 ms-2"
+                    onClick={()=>dispatch(incrementProductQuantity(_id))}
+                    >
                         <MDBIcon fas icon="plus" />
                     </MDBBtn>
                 </div>
