@@ -5,7 +5,6 @@ export interface ICartProduct extends IProduct {
     quantity: number,
     position: number
 }
-
 export type TCartState = {
     products: ICartProduct[],
     shippingCost: number,
@@ -22,6 +21,8 @@ const initialState: TCartState = {
     discount: 0,
     total: 0,
 }
+
+
 
 export const CartSlice = createSlice({
     initialState,
@@ -42,8 +43,9 @@ export const CartSlice = createSlice({
             const {payload} = action
             console.log('inc =>',payload)
             state.products = state.products.map(product => {
+                console.log(product._id === payload, product._id,payload)
                 if (product._id === payload) {
-
+                    console.log('matching product')
                     return {
                         ...product,
                         quantity: product.quantity + 1
