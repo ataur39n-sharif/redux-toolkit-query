@@ -4,7 +4,6 @@ import Cart from "./Cart.tsx";
 import {useEffect} from "react";
 import {RootState} from "./App/store.ts";
 import {useDispatch, useSelector} from "react-redux";
-import {getProducts} from "./App/features/productSlice.ts";
 import {AnyAction, ThunkDispatch} from "@reduxjs/toolkit";
 
 function App() {
@@ -12,13 +11,13 @@ function App() {
     const dispatch = useDispatch<ThunkDispatch<RootState, any, AnyAction>>()
 
         useEffect(()=>{
-            dispatch(getProducts(5))
+            // dispatch(getProducts(5))
         },[])
 
 
   return (
       <>
-          <Cart cart={cart} products={cart.products}/>
+          <Cart cart={cart} products={cart.products|| []}/>
       </>
   )
 }

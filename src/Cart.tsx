@@ -11,14 +11,13 @@ import {
 import SingleCard from "./components/Product/singleCard.tsx";
 import {applyCoupon, ICartProduct, TCartState, updateShippingCost} from "./App/features/cartSlice.ts";
 import {useDispatch} from "react-redux";
-import {getProducts} from "./App/features/productSlice.ts";
 import {AnyAction, ThunkDispatch} from "@reduxjs/toolkit";
 import {RootState} from "./App/store.ts";
 
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-export default function Cart({cart,products}) {
+export default function Cart({cart,products=[]}) {
     const {subTotal,total,discount,shippingCost} = cart as TCartState
     const dispatch = useDispatch<ThunkDispatch<RootState, any, AnyAction>>()
     return (
@@ -39,7 +38,7 @@ export default function Cart({cart,products}) {
                                                     <select
                                                         className="select p-2 rounded bg-grey"
                                                         style={{ width: "100%" }}
-                                                    onChange={(e)=>dispatch(getProducts(Number(e.target.value)))}
+                                                    // onChange={(e)=>dispatch())}
                                                     >
                                                         <option value={5}>Default</option>
                                                         <option value={10}>10 items</option>
