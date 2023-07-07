@@ -11,14 +11,16 @@ import {
 import SingleCard from "./components/Product/singleCard.tsx";
 import {applyCoupon, ICartProduct, TCartState, updateShippingCost} from "./App/features/cartSlice.ts";
 import {useDispatch} from "react-redux";
+import {getProducts} from "./App/features/productSlice.ts";
+import {AnyAction, ThunkDispatch} from "@reduxjs/toolkit";
+import {RootState} from "./App/store.ts";
 
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export default function Cart({cart,products}) {
-    console.log(cart)
     const {subTotal,total,discount,shippingCost} = cart as TCartState
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<ThunkDispatch<RootState, any, AnyAction>>()
     return (
         <section className="h-100 h-custom" style={{ backgroundColor: "#eee" }}>
             <MDBContainer className="py-5 h-100">
@@ -34,9 +36,12 @@ export default function Cart({cart,products}) {
                                                     Shopping Cart
                                                 </MDBTypography>
                                                 <MDBTypography className="mb-0 text-muted">
-                                                    <select className="select p-2 rounded bg-grey" style={{ width: "100%" }}>
-                                                        <option value={undefined}>Default</option>
-                                                        <option value={5}>5 items</option>
+                                                    <select
+                                                        className="select p-2 rounded bg-grey"
+                                                        style={{ width: "100%" }}
+                                                    onChange={(e)=>dispatch(getProducts(Number(e.target.value)))}
+                                                    >
+                                                        <option value={5}>Default</option>
                                                         <option value={10}>10 items</option>
                                                         <option value={15}>15 items</option>
                                                         <option value={20}>20 items</option>

@@ -24,8 +24,9 @@ const initialState: TProductState = {
     products: []
 }
 
-export const getProducts = createAsyncThunk('product/getProducts', async (_,thunkAPI) => {
-    const res = await axios.get(`https://anxious-erin-shrug.cyclic.app/api/products?limit=4&page=${Math.round(Math.random() * 10)}`)
+export const getProducts = createAsyncThunk('product/getProducts',
+    async (limit:number,thunkAPI) => {
+    const res = await axios.get(`https://anxious-erin-shrug.cyclic.app/api/products?limit=${Number(limit)}&page=${Math.round(Math.random() * 10)}`)
     const modifiedData: any = [];
     res.data.products?.map((product: any, index: number) => {
         modifiedData.push({...product, quantity: 1, position: index})

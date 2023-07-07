@@ -12,7 +12,7 @@ function App() {
     const dispatch = useDispatch<ThunkDispatch<RootState, any, AnyAction>>()
 
         useEffect(()=>{
-            dispatch(getProducts())
+            dispatch(getProducts(5))
         },[])
 
 
