@@ -19,7 +19,7 @@ function App() {
 
   return (
       <>
-          <Cart products={cart.products}/>
+          <Cart cart={cart} products={cart.products}/>
       </>
   )
 }

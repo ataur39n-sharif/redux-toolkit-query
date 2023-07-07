@@ -9,12 +9,14 @@ import {
     MDBTypography,
 } from "mdb-react-ui-kit";
 import SingleCard from "./components/Product/singleCard.tsx";
+import {ICartProduct, TCartState} from "./App/features/cartSlice.ts";
 
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-export default function Cart({products}) {
-
+export default function Cart({cart,products}) {
+    console.log(cart)
+    const {subTotal,total,discount,shippingCost} = cart as TCartState
     return (
         <section className="h-100 h-custom" style={{ backgroundColor: "#eee" }}>
             <MDBContainer className="py-5 h-100">
@@ -42,7 +44,7 @@ export default function Cart({products}) {
 
                                             <hr className="my-4" />
                                             {
-                                                (products as any[]).map((field:any,i) =>(
+                                                (products as ICartProduct[]).map((field:any,i) =>(
                                                     <SingleCard key={i} fields={field}/>
                                                 ))
                                             }
@@ -86,26 +88,26 @@ export default function Cart({products}) {
                                                 <MDBTypography tag="h6" className="text-uppercase">
                                                     Subtotal
                                                 </MDBTypography>
-                                                <MDBTypography tag="h6">$ 13.00</MDBTypography>
+                                                <MDBTypography tag="h6">$ {subTotal}</MDBTypography>
                                             </div>
                                             <div className="d-flex justify-content-between ">
                                                 <MDBTypography tag="h6" className="text-uppercase">
                                                     Shipping
                                                 </MDBTypography>
-                                                <MDBTypography tag="h6">$ 0.00</MDBTypography>
+                                                <MDBTypography tag="h6">$ {shippingCost}</MDBTypography>
                                             </div>
                                             <div className="d-flex justify-content-between">
                                                 <MDBTypography tag="h6" className="text-uppercase">
                                                     discount
                                                 </MDBTypography>
-                                                <MDBTypography tag="h6">$ 00</MDBTypography>
+                                                <MDBTypography tag="h6">$ {discount}</MDBTypography>
                                             </div>
                                             <hr className="my-4" />
                                             <div className="d-flex justify-content-between mb-5">
                                                 <MDBTypography tag="h5" className="text-uppercase">
                                                     Total price
                                                 </MDBTypography>
-                                                <MDBTypography tag="h5">$ 137.00</MDBTypography>
+                                                <MDBTypography tag="h5">$ {total}</MDBTypography>
                                             </div>
 
                                             <MDBBtn color="dark" block size="lg">

@@ -41,11 +41,8 @@ export const CartSlice = createSlice({
         },
         incrementProductQuantity:(state:TCartState, action)=>{
             const {payload} = action
-            console.log('inc =>',payload)
             state.products = state.products.map(product => {
-                console.log(product._id === payload, product._id,payload)
                 if (product._id === payload) {
-                    console.log('matching product')
                     return {
                         ...product,
                         quantity: product.quantity + 1
@@ -54,13 +51,47 @@ export const CartSlice = createSlice({
                     return product
                 }
             })
-            console.log('after update',state.products)
-
             state.subTotal = state.products.reduce((accumulator, product) => {
                 return accumulator + product.price * product.quantity;
             }, 0);
             state.discount = state.coupon === "flat20" ? (state.subTotal * 0.20) : 0
-
+            state.total = state.subTotal + state.shippingCost - state.discount
+        },
+        decrementProductQuantity:(state, action)=>{
+            const {payload} = action
+            state.products = state.products.map(product => {
+                if (product._id === payload) {
+                    return {
+                        ...product,
+                        quantity: product.quantity - 1
+                    }
+                } else {
+                    return product
+                }
+            })
+            state.subTotal = state.products.reduce((accumulator, product) => {
+                return accumulator + product.price * product.quantity;
+            }, 0);
+            state.discount = state.coupon === "flat20" ? (state.subTotal * 0.20) : 0
+            state.total = state.subTotal + state.shippingCost - state.discount
+        },
+        setProductQuantity:(state, action)=>{
+            const {payload} = action
+            console.log(payload)
+            state.products = state.products.map(product => {
+                if (product._id === payload._id) {
+                    return {
+                        ...product,
+                        quantity: Number(payload.quantity)
+                    }
+                } else {
+                    return product
+                }
+            })
+            state.subTotal = state.products.reduce((accumulator, product) => {
+                return accumulator + product.price * product.quantity;
+            }, 0);
+            state.discount = state.coupon === "flat20" ? (state.subTotal * 0.20) : 0
             state.total = state.subTotal + state.shippingCost - state.discount
         }
     }
@@ -68,7 +99,9 @@ export const CartSlice = createSlice({
 
 export const {
     incrementProductQuantity,
-    loadCartProduct
+    loadCartProduct,
+    decrementProductQuantity,
+    setProductQuantity
 }=CartSlice.actions
 
 export default CartSlice.reducer

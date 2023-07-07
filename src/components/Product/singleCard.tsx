@@ -1,12 +1,16 @@
 import {MDBBtn, MDBCardImage, MDBCol, MDBIcon, MDBInput, MDBRow, MDBTypography} from "mdb-react-ui-kit";
 import {useDispatch} from "react-redux";
-import {incrementProductQuantity} from "../../App/features/cartSlice.ts";
+import {
+    decrementProductQuantity,
+    ICartProduct,
+    incrementProductQuantity,
+    setProductQuantity
+} from "../../App/features/cartSlice.ts";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const SingleCard = ({fields}) => {
-    const {brand,category,price,thumbnail,_id} = fields;
-
+    const {brand,category,price,thumbnail,_id,quantity} = fields as ICartProduct;
     const dispatch = useDispatch()
     return (
         <MDBRow className="mb-4 d-flex justify-content-between align-items-center">
@@ -25,11 +29,18 @@ const SingleCard = ({fields}) => {
             </MDBCol>
             <MDBCol md="3" lg="3" xl="3" className="d-flex align-items-center">
                 <div className="d-flex mb-4" style={{ maxWidth: "300px" }}>
-                    <MDBBtn className="px-3 me-2">
+                    <MDBBtn className="px-3 me-2"
+                            onClick={()=>dispatch(decrementProductQuantity(_id))}
+                    >
                         <MDBIcon fas icon="minus" />
                     </MDBBtn>
 
-                    <MDBInput defaultValue={1} min={0} type="number" label="Quantity" />
+                    <MDBInput
+                        value={quantity} min={0} type="number" label="Quantity"
+                    onChange={(e)=>dispatch(setProductQuantity({
+                        _id, quantity:e.target.value
+                    }))}
+                    />
 
                     <MDBBtn className="px-3 ms-2"
                     onClick={()=>dispatch(incrementProductQuantity(_id))}
@@ -40,7 +51,7 @@ const SingleCard = ({fields}) => {
             </MDBCol>
             <MDBCol md="3" lg="2" xl="2" className="text-end">
                 <MDBTypography tag="h6" className="mb-0">
-                    ${price}
+                    ${price*quantity}
                 </MDBTypography>
             </MDBCol>
             <MDBCol md="1" lg="1" xl="1" className="text-end">
