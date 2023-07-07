@@ -17,7 +17,7 @@ import {RootState} from "./App/store.ts";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-export default function Cart({cart,products=[]}) {
+export default function Cart({cart,products}) {
     const {subTotal,total,discount,shippingCost} = cart as TCartState
     const dispatch = useDispatch<ThunkDispatch<RootState, any, AnyAction>>()
     return (
