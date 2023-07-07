@@ -15,7 +15,6 @@ function App() {
             dispatch(getProducts())
         },[])
 
-    console.log()
 
   return (
       <>

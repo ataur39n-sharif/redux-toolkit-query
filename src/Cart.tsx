@@ -9,7 +9,8 @@ import {
     MDBTypography,
 } from "mdb-react-ui-kit";
 import SingleCard from "./components/Product/singleCard.tsx";
-import {ICartProduct, TCartState} from "./App/features/cartSlice.ts";
+import {applyCoupon, ICartProduct, TCartState, updateShippingCost} from "./App/features/cartSlice.ts";
+import {useDispatch} from "react-redux";
 
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -17,6 +18,7 @@ import {ICartProduct, TCartState} from "./App/features/cartSlice.ts";
 export default function Cart({cart,products}) {
     console.log(cart)
     const {subTotal,total,discount,shippingCost} = cart as TCartState
+    const dispatch = useDispatch()
     return (
         <section className="h-100 h-custom" style={{ backgroundColor: "#eee" }}>
             <MDBContainer className="py-5 h-100">
@@ -65,7 +67,9 @@ export default function Cart({cart,products}) {
                                             </MDBTypography>
 
                                             <div className="mb-4 pb-2">
-                                                <select className="select p-2 rounded bg-grey" style={{ width: "100%" }}>
+                                                <select className="select p-2 rounded bg-grey" style={{ width: "100%" }}
+                                                onChange={(e)=>dispatch(updateShippingCost(e.target.value))}
+                                                >
                                                     <option value={0}>--Select-Delivery--</option>
                                                     <option value={5}>Regular-Delivery- $5.00</option>
                                                     <option value={15}>Standard-Delivery- $15.00</option>
@@ -79,7 +83,9 @@ export default function Cart({cart,products}) {
                                             </MDBTypography>
 
                                             <div className="mb-5">
-                                                <MDBInput size="lg" label="Enter your code" />
+                                                <MDBInput size="lg" label="Enter code : FLAT20"
+                                                onChange={(e)=>dispatch(applyCoupon(e.target.value))}
+                                                />
                                             </div>
 
                                             <hr className="my-4" />

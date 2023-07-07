@@ -30,12 +30,11 @@ export const CartSlice = createSlice({
     reducers:{
         loadCartProduct:(state:TCartState, action)=>{
             const {payload} = action
-            console.log('loadpd',payload)
             state.products=payload
             state.subTotal = state.products.reduce((accumulator, product) => {
                 return accumulator + product.price * product.quantity;
             }, 0);
-            state.discount = state.coupon === "flat20" ? (state.subTotal * 0.20) : 0
+            state.discount = state.coupon === "flat20" ? Number((state.subTotal * 0.20).toFixed(2)) : 0
 
             state.total = state.subTotal + state.shippingCost - state.discount
         },
@@ -54,13 +53,13 @@ export const CartSlice = createSlice({
             state.subTotal = state.products.reduce((accumulator, product) => {
                 return accumulator + product.price * product.quantity;
             }, 0);
-            state.discount = state.coupon === "flat20" ? (state.subTotal * 0.20) : 0
+            state.discount = state.coupon === "flat20" ? Number((state.subTotal * 0.20).toFixed(2)) : 0
             state.total = state.subTotal + state.shippingCost - state.discount
         },
         decrementProductQuantity:(state, action)=>{
             const {payload} = action
             state.products = state.products.map(product => {
-                if (product._id === payload) {
+                if (product._id === payload && product.quantity>1) {
                     return {
                         ...product,
                         quantity: product.quantity - 1
@@ -72,14 +71,13 @@ export const CartSlice = createSlice({
             state.subTotal = state.products.reduce((accumulator, product) => {
                 return accumulator + product.price * product.quantity;
             }, 0);
-            state.discount = state.coupon === "flat20" ? (state.subTotal * 0.20) : 0
+            state.discount = state.coupon === "flat20" ? Number((state.subTotal * 0.20).toFixed(2)) : 0
             state.total = state.subTotal + state.shippingCost - state.discount
         },
         setProductQuantity:(state, action)=>{
             const {payload} = action
-            console.log(payload)
             state.products = state.products.map(product => {
-                if (product._id === payload._id) {
+                if (product._id === payload._id && payload.quantity>1) {
                     return {
                         ...product,
                         quantity: Number(payload.quantity)
@@ -91,17 +89,37 @@ export const CartSlice = createSlice({
             state.subTotal = state.products.reduce((accumulator, product) => {
                 return accumulator + product.price * product.quantity;
             }, 0);
-            state.discount = state.coupon === "flat20" ? (state.subTotal * 0.20) : 0
+            state.discount = state.coupon === "flat20" ? Number((state.subTotal * 0.20).toFixed(2)) : 0
+            state.total = state.subTotal + state.shippingCost - state.discount
+        },
+        deleteFromCart:(state, action)=>{
+            state.products = state.products.filter((product) => product._id !== action.payload)
+            state.subTotal = state.products.reduce((accumulator, product) => {
+                return accumulator + product.price * product.quantity;
+            }, 0);
+            state.discount = state.coupon === "flat20" ? Number((state.subTotal * 0.20).toFixed(2)) : 0
+
+            state.total = state.subTotal + state.shippingCost - state.discount
+        },
+        updateShippingCost:(state, action)=>{
+            state.shippingCost=Number(action.payload)
+            state.total = state.subTotal + state.shippingCost
+        },
+        applyCoupon:(state, action)=>{
+            state.coupon = action.payload.toLowerCase()
+            state.discount = state.coupon === "flat20" ? Number((state.subTotal * 0.20).toFixed(2)) : 0
             state.total = state.subTotal + state.shippingCost - state.discount
         }
     }
 })
-
 export const {
     incrementProductQuantity,
     loadCartProduct,
     decrementProductQuantity,
-    setProductQuantity
+    setProductQuantity,
+    updateShippingCost,
+    deleteFromCart,
+    applyCoupon
 }=CartSlice.actions
 
 export default CartSlice.reducer

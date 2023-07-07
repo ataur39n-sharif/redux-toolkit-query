@@ -1,7 +1,7 @@
 import {MDBBtn, MDBCardImage, MDBCol, MDBIcon, MDBInput, MDBRow, MDBTypography} from "mdb-react-ui-kit";
 import {useDispatch} from "react-redux";
 import {
-    decrementProductQuantity,
+    decrementProductQuantity, deleteFromCart,
     ICartProduct,
     incrementProductQuantity,
     setProductQuantity
@@ -55,7 +55,9 @@ const SingleCard = ({fields}) => {
                 </MDBTypography>
             </MDBCol>
             <MDBCol md="1" lg="1" xl="1" className="text-end">
-                <MDBBtn className="px-3 me-2">
+                <MDBBtn className="px-3 me-2"
+                onClick={()=>dispatch(deleteFromCart(_id))}
+                >
                     <MDBIcon fas icon="trash"/>
             </MDBBtn>
             </MDBCol>
