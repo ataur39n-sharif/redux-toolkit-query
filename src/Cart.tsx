@@ -13,6 +13,7 @@ import {applyCoupon, ICartProduct, TCartState, updateShippingCost} from "./App/f
 import {useDispatch} from "react-redux";
 import {AnyAction, ThunkDispatch} from "@reduxjs/toolkit";
 import {RootState} from "./App/store.ts";
+import {useLazyGetProductsQuery} from "./App/features/apiSlice.ts";
 
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -20,6 +21,18 @@ import {RootState} from "./App/store.ts";
 export default function Cart({cart,products}) {
     const {subTotal,total,discount,shippingCost} = cart as TCartState
     const dispatch = useDispatch<ThunkDispatch<RootState, any, AnyAction>>()
+
+    const [getProduct] = useLazyGetProductsQuery()
+
+
+    const handleChange = (value:number)=>{
+        getProduct({
+            page:Math.round(Math.random() * 10),
+            limit:value,
+            pageName:'cart.tsx'
+        })
+    }
+
     return (
         <section className="h-100 h-custom" style={{ backgroundColor: "#eee" }}>
             <MDBContainer className="py-5 h-100">
@@ -32,13 +45,13 @@ export default function Cart({cart,products}) {
                                         <div className="p-5">
                                             <div className="d-flex justify-content-between align-items-center mb-5">
                                                 <MDBTypography tag="h1" className="fw-bold mb-0 text-black">
-                                                    Shopping Cart
+                                                    Shopping Cart - {products.length}
                                                 </MDBTypography>
                                                 <MDBTypography className="mb-0 text-muted">
                                                     <select
                                                         className="select p-2 rounded bg-grey"
                                                         style={{ width: "100%" }}
-                                                    // onChange={(e)=>dispatch())}
+                                                    onChange={(e)=>handleChange(Number(e.target.value))}
                                                     >
                                                         <option value={5}>Default</option>
                                                         <option value={10}>10 items</option>
