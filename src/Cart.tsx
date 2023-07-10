@@ -24,12 +24,9 @@ export default function Cart({cart,products}) {
 
     const [getProduct] = useLazyGetProductsQuery()
 
-
     const handleChange = (value:number)=>{
         getProduct({
-            page:Math.round(Math.random() * 10),
             limit:value,
-            pageName:'cart.tsx'
         })
     }
 
@@ -63,6 +60,7 @@ export default function Cart({cart,products}) {
 
                                             <hr className="my-4" />
                                             {
+                                                products &&
                                                 (products as ICartProduct[]).map((field:any,i) =>(
                                                     <SingleCard key={i} fields={field}/>
                                                 ))

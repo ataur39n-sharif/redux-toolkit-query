@@ -7,15 +7,11 @@ import {useGetProductsQuery, } from "./App/features/apiSlice.ts";
 
 function App() {
     const cart = useSelector((state: RootState) => state.cart)
-    
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const {data} = useGetProductsQuery({
-        page:Math.round(Math.random() * 10),
         limit:5,
-        pageName:'app.tsx'
     })
-    // console.table(data)
     return (
       <>
           <Cart cart={cart} products={cart.products}/>

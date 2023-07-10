@@ -10,7 +10,7 @@ import {
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const SingleCard = ({fields}) => {
-    const {brand,category,price,thumbnail,_id,quantity} = fields as ICartProduct;
+    const {brand,category,price=1,thumbnail,_id,quantity=1} = fields as ICartProduct;
     const dispatch = useDispatch()
     return (
         <MDBRow className="mb-4 d-flex justify-content-between align-items-center">

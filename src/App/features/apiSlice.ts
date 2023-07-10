@@ -4,8 +4,6 @@ import {IProduct} from "./productSlice.ts";
 
 export type TProductQueryParameters ={
     limit:number,
-    page?:number,
-    pageName?:string
 }
 export const ApiSlice = createApi({
     reducerPath:"productApi",
@@ -15,11 +13,8 @@ export const ApiSlice = createApi({
     tagTypes:["product"],
     endpoints:(builder)=>({
         getProducts:builder.query({
-            query:(data:TProductQueryParameters={
-                limit:5,
-                page:Math.round(Math.random() * 10)
-            })=>({
-                url:`/products?limit=${Number(data.limit)}&page=${data.page}`
+            query:(data:TProductQueryParameters)=>({
+                url:`/products?limit=${Number(data.limit)}&page=${Math.round(Math.random() * 10)}`
             }),
             providesTags: (result): TagDescription<"product">[] =>
                 result.products
