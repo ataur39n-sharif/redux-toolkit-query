@@ -13,8 +13,8 @@ import {applyCoupon, ICartProduct, TCartState, updateShippingCost} from "./App/f
 import {useDispatch} from "react-redux";
 import {AnyAction, ThunkDispatch} from "@reduxjs/toolkit";
 import {RootState} from "./App/store.ts";
-import {useLazyGetProductsQuery} from "./App/features/apiSlice.ts";
-
+import {useBkashPayMutation, useLazyGetProductsQuery} from "./App/features/apiSlice.ts";
+import toast from "react-hot-toast";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -23,11 +23,30 @@ export default function Cart({cart,products}) {
     const dispatch = useDispatch<ThunkDispatch<RootState, any, AnyAction>>()
 
     const [getProduct] = useLazyGetProductsQuery()
+    const [bkashPay] = useBkashPayMutation()
 
     const handleChange = (value:number)=>{
         getProduct({
             limit:value,
         })
+    }
+
+    const handleBkashPay =async ()=>{
+      try {
+          console.log(total)
+          const result = await bkashPay(total)
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          if (result?.data?.success) {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              window.location.href = result?.data?.data?.bkashURL;
+          } else {
+              toast.error("Something went wrong");
+          }
+      }catch (e) {
+          toast.error((e as Error).message);
+      }
     }
 
     return (
@@ -131,8 +150,11 @@ export default function Cart({cart,products}) {
                                                 <MDBTypography tag="h5">$ {total}</MDBTypography>
                                             </div>
 
-                                            <MDBBtn color="dark" block size="lg">
-                                                Go to Checkout
+                                            <MDBBtn color="dark" block size="lg"
+                                                    onClick={()=>handleBkashPay()}
+                                            >
+                                                {/*Go to Checkout*/}
+                                                Pay via Bkash
                                             </MDBBtn>
                                         </div>
                                     </MDBCol>

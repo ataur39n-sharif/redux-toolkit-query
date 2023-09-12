@@ -32,9 +32,19 @@ export const ApiSlice = createApi({
                 })
                 dispatch(loadCartProduct(modifiedData))
             }
+        }),
+        bkashPay:builder.mutation({
+            query:(amount: number)=>({
+                url:`/bkash/payment`,
+                method: "POST",
+                body: {amount}
+            })
         })
     })
 })
 
-export const {useGetProductsQuery,
-useLazyGetProductsQuery} = ApiSlice
+export const {
+    useGetProductsQuery,
+useLazyGetProductsQuery,
+useBkashPayMutation
+} = ApiSlice
